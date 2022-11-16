@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MovementControls : MonoBehaviour
 {
-    public Vector2 speed = new Vector2(50, 50);
+    public float speed;
+    public float jumpAmount;
+    public Rigidbody2D body;
 
     // Start is called before the first frame update
     void Start()
@@ -15,13 +17,16 @@ public class MovementControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal");
-        float inputY = Input.GetAxis("Vertical");
+        // Jumping mechanic
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space was clicked");
+            body.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+        }
 
-        Vector3 movement = new Vector3(speed.x * inputX, speed.y * inputY, 0);
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputY = Input.GetAxisRaw("Vertical");
+        body.velocity = new Vector2(inputX * speed, inputY * speed);
 
-        movement *= Time.deltaTime;
-
-        transform.Translate(movement);    
     }
 }
